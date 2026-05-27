@@ -2,6 +2,11 @@
 
 Aplicação em React + Vite para registro de sintomas relacionados à endometriose.[web:181]
 
+## Demo
+
+Página publicada em:  
+https://raulfmiranda.github.io/endo/
+
 ## Clonar o projeto
 
 ```bash
@@ -35,7 +40,7 @@ export default defineConfig({
 npm install gh-pages --save-dev
 ```
 
-3. Adicionar scripts no `package.json`:
+3. Scripts no `package.json`:
 
 ```json
 "scripts": {
@@ -55,4 +60,4 @@ npm run deploy
 
 5. No GitHub, em **Settings → Pages**, selecionar:
    - Source: **Deploy from a branch**
-   - Branch: `gh-pages`, pasta `/ (root)`.[web:58][web:71]
+   - Branch: `gh-pages`, pasta `/ (root)`.
