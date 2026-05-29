@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 // importa o pico.css (tema padrão, claro/escuro automático)
-import "@picocss/pico/css/pico.min.css";
+// import "@picocss/pico/css/pico.min.css";
+import "./styles.css";
 
 import App from "./App.jsx";
 

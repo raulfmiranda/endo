@@ -1,16 +1,20 @@
-import { useState, useEffect } from "react";
-import EntryForm from "./components/EntryForm";
-import History from "./components/History";
-import Report from "./components/Report";
+import { useEffect, useState } from "react";
+import EntryForm from "./components/EntryForm.jsx";
+import History from "./components/History.jsx";
+import Report from "./components/Report.jsx";
 
 function App() {
   const [entries, setEntries] = useState([]);
-  const [activeTab, setActiveTab] = useState("form"); // form | history | report
+  const [activeTab, setActiveTab] = useState("form");
 
   useEffect(() => {
     const saved = localStorage.getItem("endo_entries_v1");
     if (saved) {
-      setEntries(JSON.parse(saved));
+      try {
+        setEntries(JSON.parse(saved));
+      } catch (e) {
+        console.error("Erro ao ler dados do localStorage", e);
+      }
     }
   }, []);
 
@@ -24,61 +28,71 @@ function App() {
   }
 
   return (
-    <main className="container">
-      <header>
-        <h1>Endo Companion</h1>
-        <p className="contrast">
-          Diário simples de sintomas para apoiar sua consulta sobre endometriose.
-        </p>
-      </header>
+    <div className="app-root">
+      <main className="app-shell">
+        <header className="app-header card">
+          <h1 className="app-title">Endo Companion</h1>
+          <p className="app-subtitle">
+            Diário de sintomas para apoiar sua consulta.
+          </p>
+        </header>
 
-      <nav>
-        <ul>
-          <li>
-            <button
-              className={activeTab === "form" ? "secondary" : "outline"}
-              type="button"
-              onClick={() => setActiveTab("form")}
-            >
-              Registrar dia
-            </button>
-          </li>
-          <li>
-            <button
-              className={activeTab === "history" ? "secondary" : "outline"}
-              type="button"
-              onClick={() => setActiveTab("history")}
-            >
-              Histórico
-            </button>
-          </li>
-          <li>
-            <button
-              className={activeTab === "report" ? "secondary" : "outline"}
-              type="button"
-              onClick={() => setActiveTab("report")}
-            >
-              Relatório
-            </button>
-          </li>
-        </ul>
-      </nav>
+        <nav className="tab-bar card">
+          <button
+            type="button"
+            className={`tab-button ${
+              activeTab === "form" ? "tab-button--active" : ""
+            }`}
+            onClick={() => setActiveTab("form")}
+          >
+            Registrar
+          </button>
+          <button
+            type="button"
+            className={`tab-button ${
+              activeTab === "history" ? "tab-button--active" : ""
+            }`}
+            onClick={() => setActiveTab("history")}
+          >
+            Histórico
+          </button>
+          <button
+            type="button"
+            className={`tab-button ${
+              activeTab === "report" ? "tab-button--active" : ""
+            }`}
+            onClick={() => setActiveTab("report")}
+          >
+            Relatório
+          </button>
+        </nav>
 
-      {/* layout mobile-first: tudo empilhado; 
-          no futuro você pode colocar grid só para telas grandes */}
-      <section>
-        {activeTab === "form" && <EntryForm onSave={addEntry} />}
-        {activeTab === "history" && <History entries={entries} />}
-        {activeTab === "report" && <Report entries={entries} />}
-      </section>
+        <section className="content">
+          {activeTab === "form" && (
+            <div className="card">
+              <EntryForm onSave={addEntry} />
+            </div>
+          )}
+          {activeTab === "history" && (
+            <div className="card">
+              <History entries={entries} />
+            </div>
+          )}
+          {activeTab === "report" && (
+            <div className="card">
+              <Report entries={entries} />
+            </div>
+          )}
+        </section>
 
-      <footer>
-        <small>
-          Dados armazenados apenas neste dispositivo (localStorage). Este app não
-          substitui acompanhamento médico.
-        </small>
-      </footer>
-    </main>
+        <footer className="app-footer">
+          <small>
+            Dados armazenados apenas neste dispositivo. Este app não substitui
+            acompanhamento médico.
+          </small>
+        </footer>
+      </main>
+    </div>
   );
 }
 
